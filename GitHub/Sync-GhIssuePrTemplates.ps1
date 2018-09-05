@@ -1,6 +1,5 @@
 ﻿$repositoryPath = "C:\Users\janl\source\repos\"
-$templatePath = "C:\Users\janl\source\repos\.github"
-$fileMask = "pull*"
+$sourceRepo = "oss-automation"
 $branchName = "dc-399-issue-templates"
 $remoteBranchAlreadyExists = $true
 $description = "DC-399"
@@ -9,6 +8,14 @@ $excludedRepos = @("Home", "cloud-sdk-js", "delivery-sdk-net", "KInspector")
 cls
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $jsonFile = Invoke-RestMethod -Uri "https://api.github.com/orgs/kentico/repos?type=public" -Method Get
+$excludedRepos += $sourceRepo
+$sourcePath = $repositoryPath + $sourceRepo
+$templatePath = $sourcePath + "\.github"
+
+if (!Test-Path -Path $sourcePath)
+{
+    git clone ("https://github.com/Kentico/" + $sourceRepo + ".git") $repositoryPath
+}
 
 foreach ($row in $jsonFile)
 {
@@ -47,17 +54,19 @@ foreach ($row in $jsonFile)
             md .github
         }
         
-        robocopy $templatePath ($fullPath + "\.github") $fileMask /s
-        cd ($fullPath + "\.github")
+        robocopy $sourcePath $fullPath CODE_OF_CONDUCT.md
+        robocopy $sourcePath $fullPath CONTRIBUTING.md
+        robocopy $templatePath ($fullPath + "\.github") * /s
+        <#cd ($fullPath + "\.github")
         $files = Get-ChildItem $fileMask
         cd ..
 
         foreach ($file in $files)
         {
             git add $file.FullName
-        }
+        }#>
 
-        git commit -a -m "Add/update issue/PR templates" -m $description
+        git commit -a -m "Add/update issue, PR templates, code of conduct, contributing guide" -m $description
         
         if (!$remoteBranchAlreadyExists)
         {
@@ -68,6 +77,7 @@ foreach ($row in $jsonFile)
             git push
         }
         
-        #git request-pull origin/master ("origin/" + $branchName)
+        git request-pull master .\
+        hub pull-request --no-edit
     }
 }
