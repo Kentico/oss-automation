@@ -1,21 +1,18 @@
-﻿$repositoryPath = "C:\Users\janle\source\repos\"
+﻿$repositoryPath = "C:\Users\janl\source\repos\"
 $sourceRepo = "oss-automation"
-$branchName = "dc-399-issue-templates"
+$branchName = "dc-399-shared-assets"
 $remoteBranchAlreadyExists = $true
 $message = "Add/update issue, PR templates, code of conduct, contributing guide"
 $description = "DC-399"
-$excludedRepos = @("cloud-sdk-js", "delivery-sdk-net")
+$pages = 3
+$excludedRepos = @("cloud-sdk-js")
 $risaRepos = `
     @("kentico-cloud-js", `
     "KenticoCloudSampleAngularApp", `
-    "KenticoCloudSampleJavascriptApp", `
-    "KenticoCloudModelGeneratorUtility", `
-    "cloud-sample-app-js", `
-    "KenticoCloudDeliveryNodeSDK")
+    "KenticoCloudSampleJavascriptApp")
 
 cls
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$kenticoJsonFile = Invoke-RestMethod -Uri "https://api.github.com/orgs/kentico/repos?type=public" -Method Get
 $excludedRepos += $sourceRepo
 $sourcePath = $repositoryPath + $sourceRepo + "\GitHub\Root"
 $templatePath = $sourcePath + "\.github"
@@ -62,6 +59,16 @@ function Sync-SharedGhAssets
         robocopy $sourcePath $fullPath CODE_OF_CONDUCT.md
         robocopy $sourcePath $fullPath CONTRIBUTING.md
         robocopy $templatePath ($fullPath + "\.github") * /s
+        Start-Sleep -Seconds 2
+        git add .\CODE_OF_CONDUCT.md -f
+        git add .\CONTRIBUTING.md -f
+        $files = Get-ChildItem -Path ($fullPath + "\.github") -Recurse
+ 
+        foreach ($file in $files) 
+        { 
+            git add $file.FullName -f
+        } 
+
         git commit -a -m $message -m $description
         
         if (!$remoteBranchAlreadyExists)
@@ -84,13 +91,18 @@ if (-Not (Test-Path -Path $sourcePath))
     git clone ("https://github.com/Kentico/" + $sourceRepo + ".git") $repositoryPath
 }
 
-foreach ($row in $kenticoJsonFile)
+for ($x = 1; $x -le $pages; $x++)
 {
-    Sync-SharedGhAssets -RepoUrl $row.clone_url -RepoName $row.name
+    $kenticoJsonFile = Invoke-RestMethod -Uri ("https://api.github.com/orgs/kentico/repos?type=public&page=" + $x) -Method Get
+
+    foreach ($row in $kenticoJsonFile)
+    {
+        Sync-SharedGhAssets -RepoUrl $row.clone_url -RepoName $row.name
+    }
 }
-<#
+
 foreach ($repo in $risaRepos)
 {
     $risaJsonFile = Invoke-RestMethod -Uri ("https://api.github.com/repos/enngage/" + $repo) -Method Get
     Sync-SharedGhAssets -RepoUrl $risaJsonFile.clone_url -RepoName $risaJsonFile.name
-}#>
+}
