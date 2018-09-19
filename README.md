@@ -5,11 +5,11 @@ Scripts used to automate maintenance tasks in GitHub and other services
 
 ## /GitHub/Sync-SharedGhAssets.ps1
 
-To use this script, install [Hub](https://github.com/github/hub) via [Scoop](https://scoop.sh/):
+To use this script, install [Scoop](https://scoop.sh/) by running the following PowerShell command:
 
 `iex (new-object net.webclient).downloadstring('https://get.scoop.sh')`
 
-and then
+and then, install [Hub](https://github.com/github/hub) via
 
 `scoop install hub`
 
