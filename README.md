@@ -7,7 +7,7 @@ Scripts used to automate maintenance tasks in GitHub and other services
 
 To use this script, install [Hub](https://github.com/github/hub) via [Scoop](https://scoop.sh/):
 
-`iex (new-object net.webclient).downloadstring('https://get.scoop.sh')` (with elevated credentials)
+`iex (new-object net.webclient).downloadstring('https://get.scoop.sh')`
 
 and then
 
