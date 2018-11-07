@@ -1,4 +1,4 @@
-﻿$repositoryPath = "C:\Users\janl\source\repos\"
+﻿$repositoryPath = "C:\Users\<username>\source\repos\"
 $sourceRepo = "oss-automation"
 $branchName = "dc-399-shared-assets"
 $remoteBranchAlreadyExists = $true
