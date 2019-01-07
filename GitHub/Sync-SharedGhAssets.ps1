@@ -7,9 +7,8 @@ $description = "DC-399"
 $pages = 3
 $excludedRepos = @("cloud-sdk-js")
 $externalRepos = `
-    @("kentico-cloud-js", `
-    "KenticoCloudSampleAngularApp", `
-    "KenticoCloudSampleJavascriptApp")
+    @("Enngage/KenticoCloudSampleAngularApp", `
+    "Enngage/KenticoCloudSampleJavascriptApp")
 
 cls
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -103,6 +102,6 @@ for ($x = 1; $x -le $pages; $x++)
 
 foreach ($repo in $externalRepos)
 {
-    $risaJsonFile = Invoke-RestMethod -Uri ("https://api.github.com/repos/enngage/" + $repo) -Method Get
-    Sync-SharedGhAssets -RepoUrl $risaJsonFile.clone_url -RepoName $risaJsonFile.name
+    $externalJsonFile = Invoke-RestMethod -Uri ("https://api.github.com/repos/" + $repo) -Method Get
+    Sync-SharedGhAssets -RepoUrl $externalJsonFile.clone_url -RepoName $externalJsonFile.name
 }
