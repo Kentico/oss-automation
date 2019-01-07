@@ -6,7 +6,7 @@ $message = "Add/update issue, PR templates, code of conduct, contributing guide"
 $description = "DC-399"
 $pages = 3
 $excludedRepos = @("cloud-sdk-js")
-$risaRepos = `
+$externalRepos = `
     @("kentico-cloud-js", `
     "KenticoCloudSampleAngularApp", `
     "KenticoCloudSampleJavascriptApp")
@@ -101,7 +101,7 @@ for ($x = 1; $x -le $pages; $x++)
     }
 }
 
-foreach ($repo in $risaRepos)
+foreach ($repo in $externalRepos)
 {
     $risaJsonFile = Invoke-RestMethod -Uri ("https://api.github.com/repos/enngage/" + $repo) -Method Get
     Sync-SharedGhAssets -RepoUrl $risaJsonFile.clone_url -RepoName $risaJsonFile.name
