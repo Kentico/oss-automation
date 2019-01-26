@@ -1,34 +1,36 @@
-﻿$repositoryPath = "C:\Users\<username>\source\repos\"
+﻿$repositoryPath = "C:\Users\<username>\<...>"
 $sourceRepo = "oss-automation"
-$branchName = "dc-399-shared-assets"
+$branchName = "master"
 $remoteBranchAlreadyExists = $true
 $message = "Add/update issue, PR templates, code of conduct, contributing guide"
-$description = "DC-399"
+$description = "DCN-34 - adjusted expectations"
 $pages = 3
-$excludedRepos = @("cloud-sdk-js")
+$excludedRepos = @("xyz")
 $externalRepos = `
     @("Enngage/KenticoCloudSampleAngularApp", `
     "Enngage/KenticoCloudSampleJavascriptApp")
 
-cls
+Clear-Host
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $excludedRepos += $sourceRepo
-$sourcePath = $repositoryPath + $sourceRepo + "\GitHub\Root"
-$templatePath = $sourcePath + "\.github"
+$sourcePath = Join-Path (Join-Path $repositoryPath $sourceRepo) "\GitHub\Root"
+
 
 function Sync-SharedGhAssets
 {
     Param (`
         [string] $RepoUrl, `
         [string] $RepoName)
+        
+    Write-Output ("Cloning: " + $RepoName)
 
-    $fullPath = $repositoryPath + $RepoName
+    $fullPath = Join-Path $repositoryPath $RepoName
 
     if ($excludedRepos -notcontains $RepoName)
     {
         if (Test-Path -Path $fullPath)
         {
-            cd $fullPath
+            Set-Location $fullPath
             git fetch --all
             git checkout master
             git pull
@@ -38,7 +40,7 @@ function Sync-SharedGhAssets
             git clone $RepoUrl $fullPath
         }
 
-        cd $fullPath
+        Set-Location $fullPath
 
         if (!$remoteBranchAlreadyExists)
         {
@@ -52,16 +54,18 @@ function Sync-SharedGhAssets
 
         if (!$remoteBranchAlreadyExists)
         {
-            md .github
+            mkdir .github
         }
         
         robocopy $sourcePath $fullPath CODE_OF_CONDUCT.md
         robocopy $sourcePath $fullPath CONTRIBUTING.md
-        robocopy $templatePath ($fullPath + "\.github") * /s
+        $sourceTemplatePath = Join-Path $sourcePath "\.github"
+        $destTemplatePath = Join-Path $fullPath "\.github"
+        robocopy $sourceTemplatePath $destTemplatePath * /s
         Start-Sleep -Seconds 2
         git add .\CODE_OF_CONDUCT.md -f
         git add .\CONTRIBUTING.md -f
-        $files = Get-ChildItem -Path ($fullPath + "\.github") -Recurse
+        $files = Get-ChildItem -Path (Join-Path $fullPath "\.github") -Recurse
  
         foreach ($file in $files) 
         { 
@@ -79,15 +83,19 @@ function Sync-SharedGhAssets
             git push
         }
         
-        git request-pull master .\
-        hub pull-request -m "$message" --no-edit
+        if($branchName -ne "master")
+        {
+            # Submit a pull request if not pushing directly to master
+            git request-pull master .\
+            hub pull-request -m "$message" --no-edit
+        }
     }
 
 }
 
 if (-Not (Test-Path -Path $sourcePath))
 {
-    git clone ("https://github.com/Kentico/" + $sourceRepo + ".git") $repositoryPath
+    git clone ("https://github.com/Kentico/" + $sourceRepo + ".git") (Join-Path $repositoryPath $sourceRepo)
 }
 
 for ($x = 1; $x -le $pages; $x++)
@@ -96,7 +104,11 @@ for ($x = 1; $x -le $pages; $x++)
 
     foreach ($row in $kenticoJsonFile)
     {
-        Sync-SharedGhAssets -RepoUrl $row.clone_url -RepoName $row.name
+        # Skip archived repos (can't be modified)
+        if($row.archived -eq $false)
+        {
+            Sync-SharedGhAssets -RepoUrl $row.clone_url -RepoName $row.name
+        }
     }
 }
 
