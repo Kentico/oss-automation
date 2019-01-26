@@ -56,7 +56,7 @@ To start with coding, fork the repository you want to contribute to, create a ne
 - Documentation is updated (e.g. code examples in README, Wiki pages, etc.)
 - All `public` members are documented (using XML doc, phpdoc, etc.)
 - Code doesn't contain any secrets (private keys, etc.)
-- Commit messages are clear. Please read these articles [Writing good commit messages](https://github.com/erlang/otp/wiki/Writing-good-commit-messages), [A Note About Git Commit Messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html), [On commit messages](https://who-t.blogspot.com/2009/12/on-commit-messages.html)
+- Commit messages are clear. Please read these articles: [Writing good commit messages](https://github.com/erlang/otp/wiki/Writing-good-commit-messages), [A Note About Git Commit Messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html), [On commit messages](https://who-t.blogspot.com/2009/12/on-commit-messages.html)
 
 
 ### Feedback
