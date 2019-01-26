@@ -1,7 +1,7 @@
 # Ways to contribute 
 <img align="right" width="100" height="100" src="https://i.imgur.com/PYTV0jP.png">
 
-There are many different ways in which you can contribute. One of the easiest wazs is simply to use our software and providing us with your feedback in discussions. You can also participating on coding new features and fixing bugs by submitting pull requests with code changes.
+There are many different ways in which you can contribute. One of the easiest ways is simply to use our software and provide us with your feedback in discussions. You can also participating on coding new features and fixing bugs by submitting pull requests with code changes.
 
 We don't want to make things complicated so we try to follow these same rules in all our repositories. 
 
