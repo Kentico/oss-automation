@@ -17,7 +17,7 @@ Sorry to hear that. Just log a new [GitHub issue](../../../../issues) and someon
 
 To get help with coding and structuring your projects, use [StackOverflow](https://stackoverflow.com/) to ask questions with one of the following tags:
 - [`kentico-cloud`](https://stackoverflow.com/questions/tagged/kentico-cloud)
-- [`kentico`](https://stackoverflow.com/questions/tagged/kentico-cloud)
+- [`kentico`](https://stackoverflow.com/questions/tagged/kentico)
 
 Our team members and the community monitor these channels on a regular basis.
 
