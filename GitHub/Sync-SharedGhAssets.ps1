@@ -5,7 +5,7 @@ $remoteBranchAlreadyExists = $true
 $message = "Add/update issue, PR templates, code of conduct, contributing guide"
 $description = "DCN-34 - adjusted expectations"
 $pages = 3
-$excludedRepos = @("xyz")
+$excludedRepos = @("community-content-backlog")
 $externalRepos = `
     @("Enngage/KenticoCloudSampleAngularApp", `
     "Enngage/KenticoCloudSampleJavascriptApp")
