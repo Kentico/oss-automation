@@ -23,7 +23,7 @@ Our team members and the community monitor these channels on a regular basis.
 ### I want to report a security bug
 <img align="right" width="100" height="100" src="https://i.imgur.com/z82nnJB.png">
 
-Security issues and bugs should be reported privately, via email, to the Kentico Developer Community Team developerscommunity@kentico.com. You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message.
+Security issues and bugs should be reported privately, via email, to the Kentico Developer Community Team devrel@kentico.com. You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message.
 
 
 ### I have an idea for a new feature (or feedback on existing functionality)
