@@ -3,6 +3,11 @@
 # Open Source Automation
 Scripts used to automate maintenance tasks in GitHub and other services
 
+# Installation
+
+1. Clone the repo recursively with all submodules: `git clone --recursive [URL to Git repo]`
+2. If you already cloned the repo and just want to install submodules run: `git submodule update --init --recursive`
+
 ## /GitHub/Sync-SharedGhAssets.ps1
 
 To use this script, install [Scoop](https://scoop.sh/) by running the following PowerShell command:
